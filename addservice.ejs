@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Information Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        background-image: url("back2.jpg");
+      }
+
+      .container {
+        background-color: rgba(255, 255, 255, 0.5);
+        /* Transparent white background */
+        backdrop-filter: blur(5px);
+        /* Blur effect */
+        justify-content: center;
+        width: 50%;
+        margin: 50px auto;
+
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+
+      form {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      input[type="text"] {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      input[type="tel"] {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      input[type="number"] {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      input[type="email"] {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      input[type="submit"] {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 90%;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      error {
+        border: 1px solid red;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Employee Information</h2>
+      <% if(data.length==0) {%>
+
+      <label for="name">Name:</label>
+      <input
+        id="name"
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Your Name"
+        required
+      />
+
+      <label for="working-hours">Working Hours:</label>
+      <input
+        id="hour"
+        type="number"
+        id="working-hours"
+        name="working-hours"
+        placeholder="Working time (in hours)"
+        required
+      />
+
+      <label for="age">Age:</label>
+      <input
+        id="age"
+        type="number"
+        id="age"
+        name="age"
+        placeholder="Enter your age"
+        required
+      />
+
+      <label for="salary">Salary:</label>
+      <input
+        id="salary"
+        type="number"
+        id="salary"
+        name="salary"
+        placeholder="Enter your salary"
+        required
+      />
+
+      <label for="phone">Phone Number:</label>
+      <input
+        id="phone"
+        type="tel"
+        name="phone"
+        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+        placeholder="1234567890"
+        maxlength="10"
+        required
+      />
+      <p id="phoneError" style="color: red; display: none">
+        Please enter a valid phone number (e.g., 1234567890).
+      </p>
+
+      <label for="email">Email ID:</label>
+      <input
+        id="email"
+        type="email"
+        id="email"
+        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+        name="email"
+        placeholder="Enter your Mail ID"
+        required
+      />
+
+      <label for="location">Location:</label>
+      <input
+        id="location"
+        type="text"
+        name="location"
+        placeholder="Your Location"
+        required
+      />
+
+      <label for="fileUpload"
+        >Upload Certificate (JPG or PNG, max 500KB):</label
+      >
+      <input
+        type="file"
+        id="fileUpload"
+        name="fileUpload"
+        accept=".jpg, .png"
+        required
+      />
+      <p id="fileError" style="color: red; display: none">
+        File size exceeds the limit of 500KB.
+      </p>
+      <small>(Maximum file size: 500KB)</small>
+      <br />
+      <br />
+
+      <label for="email">Description:</label>
+      <textarea
+        name="description"
+        id="des"
+        cols="30"
+        rows="10"
+        placeholder="Enter your description"
+      ></textarea>
+      <br />
+      <br />
+      <button id="button">Apply</button>
+      <% } %> <% if(data.length!=0){ %>
+      <h5>You already created account as a Employee</h5>
+      <button id="goback" onclick="gohome()">Home</button>
+
+      <% } %>
+    </div>
+    <script>
+      document.getElementById("button").addEventListener("click", (eve) => {
+        console.clear();
+
+        // Check if all fields have a value
+        var name = document.getElementById("name").value;
+        var hour = document.getElementById("hour").value;
+        var age = document.getElementById("age").value;
+        var phone = document.getElementById("phone").value;
+        var email = document.getElementById("email").value;
+        var salary = document.getElementById("salary").value;
+        var location = document.getElementById("location").value;
+        var desc = document.getElementById("des").value;
+        var file = document.getElementById("fileUpload").files[0];
+
+        if (
+          name &&
+          hour &&
+          age &&
+          phone &&
+          email &&
+          salary &&
+          location &&
+          desc &&
+          file &&
+          email.includes("@")
+        ) {
+          var form = new FormData();
+          form.append("name", name);
+          form.append("hour", hour);
+          form.append("age", age);
+          form.append("phone", phone);
+          form.append("email", email);
+          form.append("salary", salary);
+          form.append("location", location);
+          form.append("desc", desc);
+          form.append("fileUpload", file);
+
+          fetch("/addservice", {
+            method: "POST",
+            body: form,
+          }).then((res) => {
+            if (res.ok) {
+              window.location.href = "/addsuc";
+            }
+          });
+        } else {
+          alert("Please fill in all fields.");
+        }
+      });
+
+      document
+        .getElementById("fileUpload")
+        .addEventListener("change", function () {
+          const file = this.files[0];
+          const fileSizeInBytes = file.size;
+          const fileSizeInKB = fileSizeInBytes / 1024; // Convert bytes to KB
+
+          // Check if file size exceeds the limit
+          if (fileSizeInKB > 500) {
+            document.getElementById("fileError").style.display = "block";
+            document.getElementById("button").style.display = "none";
+            this.value = ""; // Clear the file input
+          } else {
+            document.getElementById("fileError").style.display = "none";
+            document.getElementById("button").style.display = "block";
+          }
+        });
+
+      document.getElementById("phone").addEventListener("input", function () {
+        const phoneInput = this.value.replace(/\D/g, ""); // Remove non-numeric characters
+        const formattedPhone = phoneInput.replace(
+          /(\d{3})(\d{3})(\d{4})/,
+          "$1$2$3"
+        );
+
+        if (phoneInput.length === 10) {
+          this.value = formattedPhone;
+          document.getElementById("phoneError").style.display = "none";
+        } else {
+          document.getElementById("phoneError").style.display = "block";
+        }
+      });
+
+      function gohome() {
+        window.location.href = "/home";
+      }
+    </script>
+  </body>
+</html>

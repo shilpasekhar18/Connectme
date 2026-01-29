@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration Successful</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-image: url("back2.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .container {
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+      }
+      h2 {
+        color: #333;
+      }
+      .handshake {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        animation: shake 0.8s ease-in-out 1;
+      }
+      .handshake img {
+        padding: 10px 70px;
+        width: 100%;
+        height: auto;
+      }
+      @keyframes shake {
+        0% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(-10deg);
+        }
+        50% {
+          transform: rotate(10deg);
+        }
+        75% {
+          transform: rotate(-10deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Registration Successful!</h2>
+      <p>Redirecting to Services</p>
+      <div class="handshake">
+        <img src="hand.jpg" alt="Handshake" />
+      </div>
+    </div>
+    <script>
+      setTimeout(()=>{
+        window.location.href="/option";
+      },1500);
+    </script>
+  </body>
+</html>

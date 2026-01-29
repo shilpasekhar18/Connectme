@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Requests Log</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <style>
+      body {
+        background-image: url('back3.jpg');
+        font-family: "Roboto", sans-serif;
+      
+        padding-top: 20px;
+        
+      }
+      .container {
+
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: rgb(241, 240, 239);
+      }
+      .card {
+       
+        margin-bottom: 20px;
+      }
+      .card-content {
+        padding: 20px;
+      }
+      .card-title {
+        color: #26a69a;
+        font-weight: 500;
+      }
+      .card-subtitle {
+        color: #757575;
+        font-weight: 300;
+        margin-top: 10px;
+      }
+      .main{
+        display: flex;
+        flex-direction: row;
+        margin: 10px;
+        padding: 10px;
+
+      }
+      h4{
+        text-align: center;
+      }
+      .close-button {
+        position: absolute;
+        top: 5px; /* Adjust as needed */
+        right: 5px; /* Adjust as needed */
+        background-color: transparent;
+        border: none;
+        color: red;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      #back {
+        position: absolute;
+        right: 20px;
+        top: 5px;
+        color: black;
+        background: white;
+        border-radius: 10px;
+        padding: 5px;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <a id="back" href="/option">Back</a>
+    <div class="main">
+      <div class="container booking-container">
+        <h4>Booked</h4>
+        
+        <!-- Add more cards for additional requests -->
+      </div>
+      <div class="container jobs-container">
+        <h4>Jobs</h4>
+       
+      </div>
+    </div>
+  <script>
+    document.addEventListener("DOMContentLoaded",()=>{
+      fetch('/getJobs')
+    .then(response => response.json())
+    .then(data => {
+        // Access the container div
+        const container = document.querySelector('.jobs-container');
+
+        // Iterate through the data array
+        data.forEach(job => {
+            // Create elements
+            const card = document.createElement('div');
+            card.classList.add('card');
+
+            const cardContent = document.createElement('div');
+            cardContent.classList.add('card-content');
+
+            const title = document.createElement('span');
+            title.classList.add('card-title');
+            title.textContent = `${job.employer_name}`;
+
+            const subtitle = document.createElement('p');
+            subtitle.classList.add('card-subtitle');
+            subtitle.textContent = job.sname;
+
+            const requestText = document.createElement('p');
+            requestText.textContent = ``;
+            
+            const date = new Date(job.date);
+            const formattedDate = date.toDateString();
+            const strong = document.createElement('strong');
+            if(job.cancel_status == 0){
+
+            strong.textContent = `BID: ${job.booking_id}, Date: ${formattedDate}, Phone: ${job.employer_phone}, Wage: ${job.wage}, Location: ${job.employer_address}, Status: Active`;
+            }
+            else{
+              strong.textContent = `BID: ${job.booking_id}, Date: ${formattedDate}, Phone: ${job.employer_phone}, Wage: ${job.wage}, Location: ${job.employer_address}, Status: Cancelled`
+            }
+
+
+            const closeButton = document.createElement('button');
+            closeButton.classList.add('close-button');
+            closeButton.textContent = '×';
+
+            // Add event listener to close button
+            closeButton.addEventListener('click', () => {
+                const bidIndex = strong.textContent.indexOf('BID:');
+                const commaIndex = strong.textContent.indexOf(',', bidIndex);
+                const bidValue = strong.textContent.substring(bidIndex + 4, commaIndex).trim();
+
+                // Send the bidValue to the /removeBooking endpoint
+                fetch('/removeBooking', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        bid: bidValue
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href="/profile";
+                    }
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+            });
+
+
+
+            // Append elements
+            requestText.appendChild(strong);
+            cardContent.appendChild(title);
+            cardContent.appendChild(subtitle);
+            cardContent.appendChild(requestText);
+            cardContent.appendChild(closeButton);
+            card.appendChild(cardContent);
+            container.appendChild(card);
+        });
+    })
+    .catch(error => console.error('Error fetching data:', error));
+    });
+
+
+    // BOOKINGS 
+
+    document.addEventListener("DOMContentLoaded",()=>{
+      fetch('/getBooking')
+    .then(response => response.json())
+    .then(data => {
+        // Access the container div
+        const container = document.querySelector('.booking-container');
+
+        // Iterate through the data array
+        data.forEach(booking => {
+            // Create elements
+            const card = document.createElement('div');
+            card.classList.add('card');
+
+            const cardContent = document.createElement('div');
+            cardContent.classList.add('card-content');
+
+            const title = document.createElement('span');
+            title.classList.add('card-title');
+            title.textContent = `${booking.name}`;
+
+            const subtitle = document.createElement('p');
+            subtitle.classList.add('card-subtitle');
+            subtitle.textContent = booking.sname;
+
+            const requestText = document.createElement('p');
+            requestText.textContent = ``;
+            
+            const date = new Date(booking.date);
+            const formattedDate = date.toDateString();
+
+            const strong = document.createElement('strong');
+            if(booking.cancel_status == 0){
+              strong.textContent = `BID: ${booking.bid}, Date: ${formattedDate}, Phone: ${booking.phone}, Wage: ${booking.wage}, Location: ${booking.employee_address}, Status: Active`;
+            }
+            else{
+              strong.textContent = `BID: ${booking.bid}, Date: ${formattedDate}, Phone: ${booking.phone}, Wage: ${booking.wage}, Location: ${booking.employee_address}, Status: Cancelled`
+            }
+
+            const closeButton = document.createElement('button');
+            closeButton.classList.add('close-button');
+            closeButton.textContent = '×';
+
+
+            // Add event listener to close button
+            closeButton.addEventListener('click', () => {
+                const bidIndex = strong.textContent.indexOf('BID:');
+                const commaIndex = strong.textContent.indexOf(',', bidIndex);
+                const bidValue = strong.textContent.substring(bidIndex + 4, commaIndex).trim();
+
+                // Send the bidValue to the /removeBooking endpoint
+                fetch('/removeBooking', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        bid: bidValue
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                      window.location.href="/profile"
+                    }
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+            });
+
+
+            // Append elements
+            requestText.appendChild(strong);
+            cardContent.appendChild(title);
+            cardContent.appendChild(subtitle);
+            cardContent.appendChild(requestText);
+            cardContent.appendChild(closeButton);
+            card.appendChild(cardContent);
+            container.appendChild(card);
+        });
+    })
+    .catch(error => console.error('Error fetching data:', error));
+    });
+  </script>
+  </body>
+</html>

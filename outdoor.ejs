@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap">
+    <style>
+        /* Your CSS styles here */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: white;
+            background-attachment: fixed;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+            text-transform: uppercase;
+        }
+
+        .container {
+            position: relative;
+            width: 1150px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .container .card {
+            position: relative;
+            width: 300px;
+            height: 420px;
+            background: #fff;
+            margin: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            transition: 0.5s;
+        }
+
+        .container:hover .card {
+            filter: blur(0px);
+            transform: scale(0.9);
+            opacity: 0.5;
+        }
+
+        .container .card:hover {
+            filter: blur(0px);
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        .container .card .circle {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            clip-path: circle(180px at center 0);
+            text-align: center;
+        }
+
+        .container .card .circle h2 {
+            color: #fff;
+            font-size: 3.5em;
+            padding: 30px 0;
+        }
+
+        .container .card .content {
+            position: absolute;
+            bottom: 10px;
+            padding: 20px;
+            page-break-after: 20px;
+            text-align: center;
+        }
+
+        .container .card .content p {
+            color: #666;
+        }
+
+        .container .card .content .book-now-button {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            background: #000;
+            color: #fff;
+            border-radius: 40px;
+            text-decoration: none;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .container .card:nth-child(1) .circle,
+        .container .card:nth-child(1) .content a {
+            background: #ffaf00;
+        }
+
+        .container .card:nth-child(2) .circle,
+        .container .card:nth-child(2) .content a {
+            background: #da2268;
+        }
+
+        .container .card:nth-child(3) .circle,
+        .container .card:nth-child(3) .content a {
+            background: #bb02ff;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px 20px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .brand-logo {
+            color: rgb(15, 15, 15);
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        header ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        header ul li {
+            margin-right: 20px;
+        }
+
+        header ul li a {
+            filter: blur(0px);
+            transform: scale(0.9);
+            opacity: 0.5;
+            color: #000;
+        }
+
+        header ul li a:hover {
+            filter: blur(0px);
+            transform: scale(1.1);
+            opacity: 1;
+            color: #000;
+        }
+
+        .date-selector{
+            margin-left: 25%;
+        }
+    </style>
+    <title>Services</title>
+</head>
+
+<body>
+    <header>
+        <a href="#" class="brand-logo">ConnectMe</a>
+        <nav>
+            <ul>
+                <li><a href="/option">Home</a></li>
+                <li><a href="About.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <body>
+        <div class="Indoor">
+            <h1><%=data[0].stype %> service</h1>
+        </div>
+
+        <div class="container" id="cardContainer">
+            <% data.forEach(item=>{ %>
+            <div class="card">
+                <div class="circle">
+                    <h2><%=item.sname %></h2>
+                </div>
+                <div class="content">
+                    <p><%=item.description %></p>
+                    <button class="book-now-button" id="bookNow_<%= item.sname %>"
+                        onclick="showDateSelector('<%= item.sname %>')">Book Now</button>
+                    <input type="date" class="date-selector" id="datePicker_<%= item.sname %>" style="display: none;">
+                </div>
+            </div>
+            <% }) %>
+        </div>
+
+        <script>
+            const showDateSelector = (service) => {
+                const buttonId = `bookNow_${service}`;
+                const datePickerId = `datePicker_${service}`;
+
+                const button = document.getElementById(buttonId);
+                const datePicker = document.getElementById(datePickerId);
+
+                button.style.display = 'none';
+                datePicker.style.display = 'block';
+
+                datePicker.addEventListener('change', () => {
+                    handleClick(service, datePicker.value);
+                });
+            };
+
+            const handleClick = (service, selectedDate) => {
+                localStorage.setItem('service', service);
+                var formData = new FormData();
+                formData.append('service', service);
+                formData.append('date', selectedDate); 
+
+                fetch("/userlist", {
+                    method: 'POST',
+                    body: formData
+                }).then((res) => {
+                    if (res.ok) {
+                        window.location.href = "/userlist";
+                    }
+                });
+            };
+        </script>
+    </body>
+
+</html>

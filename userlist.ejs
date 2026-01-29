@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" />
+  <style>
+    /* Your CSS styles here */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 36px;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #fff;
+      background-attachment: fixed;
+    }
+
+    .container {
+      position: relative;
+      width: 1150px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .container .card {
+      position: relative;
+      width: 250px;
+      height: 320px;
+      background: #fff;
+      margin: 20px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+      transition: 0.5s;
+    }
+
+    .container:hover .card {
+      filter: blur(0px);
+      transform: scale(0.9);
+      opacity: 0.5;
+    }
+
+    .container .card:hover {
+      filter: blur(0px);
+      transform: scale(1.1);
+      opacity: 1;
+    }
+
+    .container .card .circle {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      clip-path: circle(180px at center 0);
+      text-align: center;
+    }
+
+    .container .card .circle h2 {
+      color: #fff;
+      font-size: 2.5em;
+      padding: 30px 0;
+    }
+
+    .container .card .content {
+      position: absolute;
+      bottom: 0px;
+      margin-top: 10%;
+      margin-bottom: 4%;
+      page-break-after: 20px;
+      text-align: center;
+      right: 0px;
+      left: 0px;
+    }
+
+    .container .card .content p {
+      color: #666;
+    }
+
+    .container .card .content button {
+      position: relative;
+      display: inline-block;
+      padding: 10px 20px;
+      background: #000;
+      color: #fff;
+      border-radius: 40px;
+      text-decoration: none;
+      margin-top: 20px;
+      border: none;
+      /* Remove border */
+      cursor: pointer;
+      /* Add cursor pointer */
+    }
+
+    .container .card .content button:hover {
+      background: #333;
+      /* Change hover background color */
+    }
+
+    .container .card:nth-child(1) .circle,
+    .container .card:nth-child(1) .content button {
+      background: #141414;
+    }
+
+    .container .card:nth-child(2) .circle,
+    .container .card:nth-child(2) .content button {
+      background: #0a0a0a;
+    }
+
+    .container .card:nth-child(3) .circle,
+    .container .card:nth-child(3) .content button {
+      background: #000000;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      padding: 10px 20px;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header .brand-logo {
+      color: rgb(15, 15, 15);
+      font-size: 24px;
+      text-decoration: none;
+    }
+
+    header ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    header ul li {
+      margin-right: 20px;
+    }
+
+    header ul li a {
+      filter: blur(0px);
+      transform: scale(0.9);
+      opacity: 0.5;
+      color: #000;
+    }
+
+    header ul li a:hover {
+      filter: blur(0px);
+      transform: scale(1.1);
+      opacity: 1;
+      color: #000;
+    }
+
+    #serviceHeading {
+      text-align: center;
+      left: 20px;
+      font-size: 36px;
+      position: fixed;
+      top: 50%;
+    }
+
+    #addServicesBtn {
+      position: fixed;
+      display: inline-block;
+      padding: 10px 20px;
+      background: #020736;
+      color: #fff;
+      border-radius: 40px;
+      text-decoration: none;
+      margin-top: 20px;
+      border: none;
+      /* Remove border */
+      cursor: pointer;
+      right: 20px;
+      top: 50%;
+      font-size: 30px;
+    }
+
+    #addServicesBtn:hover {
+      background-color: #050505;
+      color: #e2dbdb;
+      /* Change background color on hover */
+      transform: scale(1.1);
+      /* Scale the button on hover */
+    }
+  </style>
+  <title>Employee List</title>
+</head>
+
+<body>
+
+  <script>
+   
+
+    // Update the service heading dynamically based on the selected service
+    window.onload = () => {
+      var savedData = localStorage.getItem("service");
+      document.title = savedData;
+      document.getElementById("serviceHeading").textContent=savedData;
+
+      // Update the service heading
+      const serviceHeading = document.getElementById("serviceHeading");
+    };
+
+    
+  </script>
+  <h1 id="serviceHeading"></h1>
+
+  <header>
+    <a href="#" class="brand-logo">ConnectMe</a>
+    <nav>
+      <ul>
+        <li><a href="/option">Home</a></li>
+        <li><a href="About.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <% data.forEach((item, index) => { %>
+        <div class="card">
+            <div class="circle" style="background: red">
+                <h2><%= item.name %></h2>
+            </div>
+            <div class="content">
+                <p>Working hours: <%= item.hours %></p>
+                <p>Wage: <%= item.wage %></p>
+                <p>Location: <%= item.location %></p>
+                <% if (item.jobs === 0) { %>
+                    <button id="booknow_<%= item.id %>" class="book-now-button" data-service="<%= item.id %>"
+                            onclick="handleClick('<%= item.id %>')">Book Now</button>
+                    <button id="cert_<%= item.id %>" class="book-now-button" data-service="<%= item.id %>" onclick="getCert('<%= item.image %>')">Qualification</button>
+                <% } else { %>
+                    <button class="book-now-button unavailable" disabled>Unavailable</button>
+                <% } %>
+            </div>
+        </div>
+    <% }) %>
+</div>
+
+  <button id="addServicesBtn">Add Services</button>
+  <script>
+    document.getElementById('addServicesBtn').addEventListener('click',(eve)=>{
+     
+      window.location.href="/addService"
+    })
+
+
+    function handleClick(id){
+      var form=new FormData()
+      form.append('id',id)
+      fetch('/choice',{
+        method:'POST',
+        body:form
+      }).then((res)=>{
+        if(res.ok){
+          window.location.href='/book'
+        }
+      })
+    }
+  
+    function getCert(imagesrc){
+      var form = new FormData();
+      form.append('imagesrc',imagesrc);
+      fetch('/cert',{
+        method:'POST',
+        body:form
+      }).then((res)=>{
+        if(res.ok){
+          window.open('/cert')
+        }
+      });
+    }
+
+  </script>
+
+</body>
+
+</html>
